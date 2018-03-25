@@ -1,0 +1,57 @@
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-md-4">
+                  <%= link_to "Write a Review", new_restaurant_review_path(@restaurant), class: "button" %>
+
+         <div class="star-rating" data-score= <%= @avg_review %> ></div>
+        <em><%= "#{@reviews.length} reviews" %></em>
+       <div class="image"> <%= image_tag @restaurant.image.url(:medium) %></div>
+       <br>
+        <div class="table-responsive">
+          <table class="table">
+            <tbody>
+              <tr>
+               
+              </tr>
+              <tr>
+                <td><strong>Description:</strong></td>
+                <td><%= @restaurant.description %></td>
+              </tr>
+              
+              
+                <td><strong>User Rating:</strong></td>
+                <td><%= @restaurant.rating %></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+         <%= link_to 'Back', restaurants_path, class: "button" %>
+
+        <% if user_signed_in? %>
+		      <% if @restaurant.user_id == current_user.id %>
+            <%= link_to 'Edit', edit_restaurant_path(@restaurant), class: "button" %> 
+            <%= link_to "Delete", restaurant_path(@restaurant), method: :delete, class: "button" %>
+          <% end %>
+        <% end %>	
+      </div>
+        <h1 class="review_title"><%= @restaurant.title %></h1>
+      <br>
+      	<% if @reviews.blank? %>
+          <h3>No reviews just yet, would you like to add the first!</h3>
+          <%= link_to "Write Review", new_restaurant_review_path(@restaurant), class: "button" %>
+        <% else %>
+			<%= render @restaurant.reviews %>
+       				<% end %>
+
+ 
+
+
+<script>
+    $('.star-rating').raty({
+      path: '/assets/',
+      readOnly: true,
+      score: function() {
+            return $(this).attr('data-score');
+    }
+  });
+</script>
